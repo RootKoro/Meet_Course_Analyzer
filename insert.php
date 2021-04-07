@@ -4,7 +4,7 @@
     $commentaire=$_REQUEST['Q17'];
 
     try{
-        $bdd= new PDO('mysql:host=localhost;dbname=MeetCourseAnalyzer;charset=utf-8','root','passer', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        $bdd= new PDO('mysql:host=localhost;dbname=MeetCourseAnalyzer;charset=utf-8','Meet_Course_Analyzer','passer', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
     }
     catch(Exception $e){
         die ('Erreur :'.$e->getMessage());
