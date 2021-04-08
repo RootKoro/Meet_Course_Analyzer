@@ -1,80 +1,75 @@
----création & connexion : base de données
-
-DROP DATABASE MeetCourseAnalyzer;
+DROP DATABASE  IF EXISTS MeetCourseAnalyzer;
 
 create database MeetCourseAnalyzer;
 use MeetCourseAnalyzer;
 
---création : tables
-
 create table Professeur(
-    MatriculeProf int auto_increment,
+    MatriculeProf int auto_increment PRIMARY KEY,
     NomProf varchar(30) not null,
     PrenomProf varchar(30) not null,
     Email varchar(50) not null,
-    CONSTRAINT pk_prof PRIMARY KEY (MatriculeProf),
+    MotDePass text
 );
 
 create table Classe (
-    CodeClasse varchar(250),
-    NombreEtudiant int not null,
-    constraint pk_Classe primary key(CodeClasse),
+    CodeClasse varchar(250) primary key,
+    NombreEtudiant int not null
 );
 
 create table Etudiant (
-    idEtudiant int auto_increment,
+    idEtudiant int auto_increment PRIMARY KEY,
     NomEtudiant varchar(30) not null,
     PrenomEtudiant varchar(30) not null,
     Email varchar(50) not null,
-    CodeClasse int not null,
-    constraint pk_Etudiant PRIMARY KEY(idEtudiant),
-    constraint fk_Etudiant foreign key(CodeClasse) REFERENCES Classe
+    CodeClasse varchar(250),
+    constraint fk_et foreign key(CodeClasse) REFERENCES Classe (CodeClasse)
 );
 
 create table Matiere (
-    IdMatiere int auto_increment,
+    IdMatiere int auto_increment primary key,
     NomMatiere varchar(50) not null,
-    Coefficient int not null,
-    constraint pk_Matiere primary key (IdMatiere),
+    Coefficient int not null
 );
 
 create table Seance (
-    idSeance int auto_increment,
+    idSeance int auto_increment primary key,
     Prof int not null,
+    constraint fk_seance_prof foreign key(Prof) REFERENCES Professeur(MatriculeProf),
     DateDebut date default CURRENT_DATE,
     DateFin date default CURRENT_DATE,
     HeureDebut time DEFAULT current_time,
     HeureFin time,
     Duree time,
     IdMatiere int,
+    constraint fk_seance_matiere foreign key(IdMatiere) REFERENCES Matiere(IdMatiere),
     classe varchar(250),
-    constraint pk_Seance primary key(idSeance),
-    constraint fk_Seance_Class foreign key(classe) REFERENCES Classe,
-    constraint fk_Seance_Prof foreign key(Prof) REFERENCES Professeur,
-    constraint fk_Seance_Mat foreign key(IdMatiere) REFERENCES Matiere
+    constraint fk_seance_classe foreign key(classe) REFERENCES Classe(CodeClasse)
 );
 
 create table Evaluation (
-    idEtudiant int foreign key REFERENCES Etudiant,
-    idSeance int foreign key REFERENCES Seance,
-    nbrEvaluation int primary key
+    IDEvaluation int auto_increment primary key,
+    noteEvaluation int,
+    commentaire text,
+    idSeance int,
+    constraint fk_evaluation foreign key(idSeance) REFERENCES Seance(idSeance)
 );
 create table Choix(
-    Prof int foreign key references Professeur,
+    Prof int,
+    constraint fk_choix_prof foreign key(Prof) references Professeur(MatriculeProf),
     nomProf varchar (255),
-    Matiere int foreign key references Seance,
+    Matiere int,
+    constraint fk_choix_matiere foreign key(Matiere) references Matiere(IdMatiere),
     intituleMatiere varchar(255),
-    Seance int foreign key references Seance,
-    classe varchar(250) foreign key references Classe
+    Seance int,
+    constraint fk_choix_Seance foreign key(Seance) references Seance(idSeance),
+    classe varchar(250),
+    constraint fk_choix_classe foreign key(classe) references Classe(CodeClasse)
 );
 
---attribution de privileges
+drop USER IF EXISTS Professeur@'localhost';
+DROP USER IF EXISTS Meet_Course_Analyzer@'localhost';
 
-drop USER Professeur@'localhost';
-DROP USER Etudiant@'localhost';
-
-grant all privilèges on MeetCourseAnalyzer.Seance to Professeur@'localhost' idenfied by "passer";
-grant all privilèges on MeetCourseAnalyzer.Choix to Professeur@'localhost' idenfied by "passer";
+grant all privileges on MeetCourseAnalyzer.Choix to Professeur@'localhost' identified by "passer";
 grant SELECT on MeetCourseAnalyzer.* to Professeur@'localhost';
 
-grant select on MeetCourseAnalyzer.* to Etudiant@'localhost' idenfied by "passer";
+grant all privileges on MeetCourseAnalyzer.* to Meet_Course_Analyzer@'localhost'  identified by "passer";
