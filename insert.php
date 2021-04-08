@@ -1,15 +1,29 @@
 <?php
 
-    $score=$_REQUEST['hidden'];
-    $commentaire=$_REQUEST['Q17'];
+use function PHPSTORM_META\type;
 
-    try{
-        $bdd= new PDO('mysql:host=localhost;dbname=MeetCourseAnalyzer;charset=utf-8','Meet_Course_Analyzer','passer', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+try{
+        $score=$_REQUEST['hidden'];
+        $commentaire=$_REQUEST['Q17'];
+        
+        $bdd= new PDO('mysql:host=localhost;dbname=meetcourseanalyzer','Meet_Course_Analyzer','passer', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        
+        $req = $bdd->query(
+        "SELECT IDEvaluation
+        From Evaluation
+        ORDER BY IDEvaluation DESC
+        LIMIT 1");
+
+        $lastRow = $req -> fetch();
+
+        $req = $bdd->prepare(
+            "UPDATE Evaluation 
+            SET noteEvaluation = ?, commentaire = ?
+            WHERE IDEvaluation = ?");
+        $req->execute([$score,$commentaire, $lastRow['IDEvaluation']]);
+        header('location:https://apps.google.com/meet/');
     }
     catch(Exception $e){
-        die ('Erreur :'.$e->getMessage());
+        die ('Erreur :'.$e/* ->getMessage() */);
     }
-
-    $req = $bdd->prepare('UPDATE Evaluation set noteEvaluation=?,commentaire=? where IDEvaluation=(select IDEvaluation from Evaluation order by IDEvaluation desc limit 1)');
-    $req->execute([$score,$commentaire]);
 ?>
