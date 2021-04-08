@@ -1,11 +1,7 @@
----création & connexion : base de données
-
-DROP DATABASE MeetCourseAnalyzer;
+DROP DATABASE  IF EXISTS MeetCourseAnalyzer;
 
 create database MeetCourseAnalyzer;
 use MeetCourseAnalyzer;
-
---création : tables
 
 create table Professeur(
     MatriculeProf int auto_increment PRIMARY KEY,
@@ -25,7 +21,7 @@ create table Etudiant (
     NomEtudiant varchar(30) not null,
     PrenomEtudiant varchar(30) not null,
     Email varchar(50) not null,
-    CodeClasse int,
+    CodeClasse varchar(250),
     constraint fk_et foreign key(CodeClasse) REFERENCES Classe (CodeClasse)
 );
 
@@ -51,8 +47,9 @@ create table Seance (
 );
 
 create table Evaluation (
-    IDEvaluation int primary key,
+    IDEvaluation int auto_increment primary key,
     noteEvaluation int,
+    commentaire text,
     idSeance int,
     constraint fk_evaluation foreign key(idSeance) REFERENCES Seance(idSeance)
 );
@@ -69,15 +66,10 @@ create table Choix(
     constraint fk_choix_classe foreign key(classe) references Classe(CodeClasse)
 );
 
---attribution de privileges
-
-drop USER Professeur@'localhost';
-DROP USER Meet_Course_Analyzer@'localhost';
+drop USER IF EXISTS Professeur@'localhost';
+DROP USER IF EXISTS Meet_Course_Analyzer@'localhost';
 
 grant all privileges on MeetCourseAnalyzer.Choix to Professeur@'localhost' identified by "passer";
 grant SELECT on MeetCourseAnalyzer.* to Professeur@'localhost';
 
 grant all privileges on MeetCourseAnalyzer.* to Meet_Course_Analyzer@'localhost'  identified by "passer";
-
-
---code du trigger...
