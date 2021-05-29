@@ -1,6 +1,6 @@
 window.onload = function() {
     let sIn = document.getElementById("signIn");
-
+        //redirection vers l'authentification//
     let link = document.createElement('a');
     link.href = "./signUp.html";
     link.innerHTML = "<br>Vous avez bien ete inscrit<br>Authentifiez vous";
