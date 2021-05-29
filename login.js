@@ -1,9 +1,7 @@
     //authentification
 
 
-    /*if(localStorage.getItem('content') !== "") {
-        document.body.innerHTML = content
-    }*/
+ 
 
     let content = document.body.innerHTML
 
