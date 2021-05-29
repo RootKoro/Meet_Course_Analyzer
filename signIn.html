@@ -3,39 +3,36 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="signStyle.css">
 </head>
 
 <body>
     <header>
-        <h1>Meet Course Analyzer</h1>
+        <h1>Meet Course Analyzer
+            <br>
+            <span>*Tous les champs sont obligatoires</span>
+        </h1>
     </header>
-    <div class="signin">
-        <form>
+    <div class="container">
+        <form action="http://localhost/serverScriptes/popup.php" method="POST">
             <fieldset>
                 <label for="firstName">Prenom :</label><br>
-                <input type="text" name="firstName" id="firstName"><br>
+                <input type="text" name="firstName" id="firstName" required="required"><br>
                 <label for="lastName">Nom :</label><br>
-                <input type="text" name="lastName" id="lastName"><br>
+                <input type="text" name="lastName" id="lastName" required="required"><br>
                 <label for="mailAdress">email :</label><br>
-                <input type="email" name="mailAdress" id="mailAdress"><br>
+                <input type="email" name="mailAdress" id="mailAdress" required="required"><br>
                 <label for="password">Mot de passe :</label><br>
-                <input type="password" name="password" id="password"><br>
-                <label for="passwordConfirm">Confirmer le mot de passe :</label><br>
-                <input type="password" name="passwordConfirm" id="passwordConfirm"><br>
-                <br><br>
-                <button class="btn" id="signInBtn">S'inscrire</button>
+                <input type="password" name="password" id="password" required="required"><br>
+                <input type="submit" value="S'inscrire" id="signIn" name="signIn" />
             </fieldset>
         </form>
     </div>
     <footer>
         <h5>Copyright cmg_0.1</h5>
     </footer>
-
-    <script src="sign.js"></script>
+    <script src="signIn.js"></script>
 </body>
 
 </html>
